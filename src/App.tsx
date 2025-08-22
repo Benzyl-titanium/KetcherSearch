@@ -1,25 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-import KetcherBox from './ketcher-component.tsx';
-import ControlPanel from './ControlPanel.jsx';
+import KetcherBox from './ketcher-component';
+import { applySmiles, clearMolecule, readSmiles } from './services/smiles';
+import ControlPanel from './ControlPanel';
 
-function App() {
-  const [ketcher, setKetcher] = useState(null);
-  const [smilesInput, setSmilesInput] = useState('');
-  const syncingFromKetcherRef = useRef(false);
-  const lastAppliedSmilesRef = useRef('');
-  const ketcherToInputTimerRef = useRef(null);
-  const inputFocusedRef = useRef(false);
-  const smilesInputRef = useRef('');
+function App(): JSX.Element {
+  const [ketcher, setKetcher] = useState<any>(null);
+  const [smilesInput, setSmilesInput] = useState<string>('');
+  const syncingFromKetcherRef = useRef<boolean>(false);
+  const lastAppliedSmilesRef = useRef<string>('');
+  const ketcherToInputTimerRef = useRef<any>(null);
+  const inputFocusedRef = useRef<boolean>(false);
+  const smilesInputRef = useRef<string>('');
   
 
   const handleClear = async () => {
     setSmilesInput("");
-    if (ketcher && ketcher.setMolecule) {
-      try {
-        await ketcher.setMolecule("");
-      } catch {
-      }
-    }
+    await clearMolecule(ketcher);
   };
 
   const handleCopy = async () => {
@@ -32,25 +28,23 @@ function App() {
     }
   };
 
-  const handleSmilesChange = (e) => {
+  const handleSmilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSmilesInput(e.target.value);
   };
 
-  const applySmilesImmediate = async (text) => {
+  const applySmilesImmediate = async (text?: string) => {
     if (!ketcher) return;
     const s = (text ?? smilesInput).trim();
     if (!s) {
-      try { await ketcher.setMolecule(''); lastAppliedSmilesRef.current = ''; } catch {}
+      await clearMolecule(ketcher);
+      lastAppliedSmilesRef.current = '';
       return;
     }
-    try {
-      await ketcher.setMolecule(s, { format: 'smiles' });
-      lastAppliedSmilesRef.current = s;
-    } catch {
-    }
+    await applySmiles(ketcher, s);
+    lastAppliedSmilesRef.current = s;
   };
 
-  const handleInputFocusChange = (focused) => {
+  const handleInputFocusChange = (focused: boolean) => {
     inputFocusedRef.current = focused;
   };
 
@@ -72,11 +66,8 @@ function App() {
         lastAppliedSmilesRef.current = '';
         return;
       }
-      try {
-        await ketcher.setMolecule(text, { format: 'smiles' });
-        lastAppliedSmilesRef.current = text;
-      } catch {
-      }
+      await applySmiles(ketcher, text);
+      lastAppliedSmilesRef.current = text;
     }, 400);
     return () => { controller.cancelled = true; clearTimeout(timer); };
   }, [smilesInput, ketcher]);
@@ -88,7 +79,7 @@ function App() {
       if (ketcherToInputTimerRef.current) clearTimeout(ketcherToInputTimerRef.current);
       ketcherToInputTimerRef.current = setTimeout(async () => {
         try {
-          const smiles = (await ketcher.getSmiles?.()) || '';
+          const smiles = await readSmiles(ketcher);
           if (!smiles) return;
           if (smiles === smilesInputRef.current) return;
           if (smiles === lastAppliedSmilesRef.current) return;

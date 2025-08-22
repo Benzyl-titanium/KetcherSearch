@@ -5,12 +5,21 @@ import {
   getPubChemData,
   getIUPACNameByCID,
   findWikipediaLink
-} from './services/pubchem.ts';
+} from './services/pubchem';
 import {
   findDrugBankId,
   buildDrugBankExactUrlByCAS,
   buildDrugBankFuzzyUrlBySmiles
-} from './services/drugbank.ts';
+} from './services/drugbank';
+
+interface ControlPanelProps {
+  smilesInput: string;
+  onSmilesChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClear: () => void | Promise<void>;
+  onCopy: () => void | Promise<void>;
+  onInputFocusChange?: (focused: boolean) => void;
+  onApplySmiles?: (value?: string) => void | Promise<void>;
+}
 
 function ControlPanel({
   smilesInput,
@@ -19,14 +28,14 @@ function ControlPanel({
   onCopy,
   onInputFocusChange,
   onApplySmiles
-}) {
+}: ControlPanelProps) {
   const [loading, setLoading] = useState(false);
 
   // Example selection
-  const handleExampleChange = (e) => {
+  const handleExampleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     if (value) {
-      onSmilesChange({ target: { value } });
+      onSmilesChange({ target: { value } } as any);
       if (onApplySmiles) onApplySmiles(value);
     }
   };
@@ -46,7 +55,7 @@ function ControlPanel({
   };
 
   // Get dropdown
-  const handleGetSelect = async (event) => {
+  const handleGetSelect = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     if (!smilesInput || !value) return;
     setLoading(true);
@@ -104,7 +113,7 @@ function ControlPanel({
     }
   };
 
-  const handleDrugBankSelect = async (event) => {
+  const handleDrugBankSelect = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     if (!smilesInput || !value) return;
     setLoading(true);
@@ -234,4 +243,4 @@ function ControlPanel({
   );
 }
 
-export default ControlPanel; 
+export default ControlPanel;

@@ -2,7 +2,9 @@
 
 # KetchKekuleSearch
 
-[简体中文](README.md)
+<p align="center">
+    <a href="README.md">简体中文</a> | English
+</p>
 
 Pure front-end implementation of smiles⇄mol based on Ketcher and Kekule.js Searching for compound information from molecular structures
 
@@ -35,6 +37,7 @@ Powered by [Ketcher](https://github.com/epam/ketcher) & [Kekule.js](https://gith
 - Get:
     - CAS
     - IUPACName
+    - Molecular Formula
 - HNMR search
 - PubChem search
 - Wikipedia search

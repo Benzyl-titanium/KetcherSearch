@@ -2,7 +2,9 @@
 
 # KetchKekuleSearch
 
-[English](README_en.md)
+<p align="center">
+    简体中文 | <a href="README_en.md">English</a>
+</p>
 
 基于Ketcher和Kekule.js的纯前端实现smiles⇄mol的从分子结构中搜索化合物信息
 
@@ -35,6 +37,7 @@ Powered by [Ketcher](https://github.com/epam/ketcher) & [Kekule.js](https://gith
 - Get:
     - CAS
     - IUPACName
+    - Molecular Formula (分子式)
 - HNMR搜索
 - PubChem搜索
 - Wikipedia搜索

@@ -4,6 +4,7 @@ import {
   getCASByCID,
   getPubChemData,
   getIUPACNameByCID,
+  getMolecularFormulaByCID,
   findWikipediaLink
 } from './services/pubchem';
 import {
@@ -80,6 +81,14 @@ function ControlPanel({
           alert(`IUPAC Name: ${name} copied`);
         } else {
           alert('IUPAC Name not found');
+        }
+      } else if (value === 'formula') {
+        const formula = await getMolecularFormulaByCID(cid);
+        if (formula) {
+          await navigator.clipboard.writeText(formula);
+          alert(`Molecular Formula: ${formula} copied`);
+        } else {
+          alert('Molecular Formula not found');
         }
       }
     } catch {
@@ -195,6 +204,7 @@ function ControlPanel({
           <option value="">Get:</option>
           <option value="cas">CAS</option>
           <option value="iupac" title="IUPACName">Name</option>
+          <option value="formula" title="Molecular Formula">Formula</option>
         </select>
         <button onClick={handleHNMR} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>HNMR</button>
         <button onClick={handlePubChem} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>PubChem</button>

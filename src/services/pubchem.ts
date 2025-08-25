@@ -50,6 +50,16 @@ export async function getIUPACNameByCID(cid: number): Promise<string | null> {
   return nameData.PropertyTable?.Properties?.[0]?.IUPACName || null;
 }
 
+export async function getMolecularFormulaByCID(cid: number): Promise<string | null> {
+  const formulaUrl = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${cid}/property/MolecularFormula/JSON`;
+  const formulaResponse = await fetch(formulaUrl);
+  if (!formulaResponse.ok) {
+    throw new Error("Failed to fetch MolecularFormula");
+  }
+  const formulaData = await formulaResponse.json();
+  return formulaData.PropertyTable?.Properties?.[0]?.MolecularFormula || null;
+}
+
 export function findWikipediaLink(
   sections: PubChemSection[],
   recordTitle: string,

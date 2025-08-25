@@ -29,9 +29,9 @@ Powered by [Ketcher](https://github.com/epam/ketcher) & [Kekule.js](https://gith
 
 - 实时转换smiles和分子结构
 - Example:
-    - Benzyl titanium
-    - Pregabalin
-    - Fluoxetine
+    - Benzyl titanium (苄钛)
+    - Pregabalin (普瑞巴林)
+    - Fluoxetine (氟西汀)
 - Clear smiles
 - Copy smiles
 - Get:
@@ -42,8 +42,8 @@ Powered by [Ketcher](https://github.com/epam/ketcher) & [Kekule.js](https://gith
 - PubChem搜索
 - Wikipedia搜索
 - DrugBank搜索
-    - exact
-    - fuzzy
+    - exact (详细)
+    - fuzzy (模糊)
 
 ## 更多
 

@@ -31,6 +31,16 @@ export async function getCASByCID(cid: number): Promise<string | null> {
   return casNumber || null;
 }
 
+export async function getSynonymsByCID(cid: number): Promise<string[]> {
+  const url = `https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/${cid}/synonyms/JSON`;
+  const response = await fetch(url);
+  if (!response.ok) throw new Error("Synonyms query failed");
+  const data = await response.json();
+  const synonyms: string[] = data.InformationList?.Information?.[0]?.Synonym || [];
+  const normalized = Array.from(new Set((synonyms || []).map((s: string) => s?.trim()).filter(Boolean)));
+  return normalized;
+}
+
 export async function getPubChemData(cid: number): Promise<any> {
   const url = `https://pubchem.ncbi.nlm.nih.gov/rest/pug_view/data/compound/${cid}/JSON/`;
   const response = await fetch(url);
@@ -69,37 +79,43 @@ export function findWikipediaLink(
     if (section.TOCHeading === "Wikipedia") {
       const information = section.Information || [];
       if (information.length > 0) {
+        const normalize = (s?: string) => (s || "").trim().toLowerCase();
         const titlesToMatch = [recordTitle, ...synonyms]
           .filter(Boolean)
-          .map((t) => t.toLowerCase());
+          .map((t) => normalize(t));
 
-        for (const info of information) {
-          const wikiTitle =
-            info.Value?.StringWithMarkup?.[0]?.String?.toLowerCase();
+        let bestUrl: string | null = null;
+        let bestScore = -1;
+
+        information.forEach((info) => {
+          const rawTitle = info.Value?.StringWithMarkup?.[0]?.String;
+          const wikiTitle = normalize(rawTitle);
+          const url = info.URL || null;
+          if (!url) return;
+
+          let score = 0;
+          if (url.includes("en.wikipedia.org")) score += 20;
+          const nameHint = normalize(info.Name);
+          if (nameHint.includes("wikipedia") && nameHint.includes("en")) score += 10;
+
           if (wikiTitle && titlesToMatch.includes(wikiTitle)) {
-            return info.URL ?? null;
-          }
-        }
-
-        for (const info of information) {
-          const wikiTitle =
-            info.Value?.StringWithMarkup?.[0]?.String?.toLowerCase();
-          if (wikiTitle) {
-            for (const titleToMatch of titlesToMatch) {
-              if (
-                titleToMatch.includes(wikiTitle) ||
-                wikiTitle.includes(titleToMatch)
-              ) {
-                return info.URL ?? null;
+            score += 100;
+          } else if (wikiTitle) {
+            for (const title of titlesToMatch) {
+              if (title && (title.includes(wikiTitle) || wikiTitle.includes(title))) {
+                score += 60;
+                break;
               }
             }
           }
-        }
 
-        const firstInfo = information[1];
-        if (firstInfo && firstInfo.URL) {
-          return firstInfo.URL;
-        }
+          if (score > bestScore) {
+            bestScore = score;
+            bestUrl = url;
+          }
+        });
+
+        if (bestUrl) return bestUrl;
       }
     }
     if (section.Section) {

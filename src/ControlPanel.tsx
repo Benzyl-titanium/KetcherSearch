@@ -5,7 +5,8 @@ import {
   getPubChemData,
   getIUPACNameByCID,
   getMolecularFormulaByCID,
-  findWikipediaLink
+  findWikipediaLink,
+  getSynonymsByCID
 } from './services/pubchem';
 import {
   findDrugBankId,
@@ -109,7 +110,12 @@ function ControlPanel({
         return;
       }
       const data = await getPubChemData(cid);
-      const wikipediaUrl = findWikipediaLink(data.Record?.Section, data.Record?.RecordTitle);
+      const synonyms = await getSynonymsByCID(cid);
+      const wikipediaUrl = findWikipediaLink(
+        data.Record?.Section,
+        data.Record?.RecordTitle,
+        synonyms
+      );
       if (wikipediaUrl) {
         window.open(wikipediaUrl, '_blank');
       } else {

@@ -131,6 +131,13 @@ function ControlPanel({
   const handleDrugBankSelect = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     if (!smilesInput || !value) return;
+    
+    if (value === 'fuzzy') {
+      window.open(buildDrugBankFuzzyUrlBySmiles(smilesInput), '_blank');
+      event.target.value = '';
+      return;
+    }
+
     setLoading(true);
     try {
       const cid = await getPubChemCID(smilesInput);
@@ -151,8 +158,6 @@ function ControlPanel({
             alert('DrugBank ID or CAS number not found');
           }
         }
-      } else if (value === 'fuzzy') {
-        window.open(buildDrugBankFuzzyUrlBySmiles(smilesInput), '_blank');
       }
     } catch {
       alert('Failed to fetch DrugBank info');

@@ -1,17 +1,32 @@
 import type { Ketcher } from 'ketcher-core';
 
-export async function applySmiles(ketcher: Ketcher | null, smiles: string): Promise<void> {
-  if (!ketcher) return;
+export interface ConversionResult {
+  success: boolean;
+  error?: string;
+  data?: string;
+}
+
+export async function applySmiles(ketcher: Ketcher | null, smiles: string): Promise<ConversionResult> {
+  if (!ketcher) {
+    return { success: false, error: 'Ketcher instance not available' };
+  }
+  
   const text = (smiles ?? '').trim();
   if (!text) {
     try {
       await ketcher.setMolecule('');
-    } catch {}
-    return;
+      return { success: true, data: '' };
+    } catch (error) {
+      return { success: false, error: `Failed to clear molecule: ${error}` };
+    }
   }
+  
   try {
     await ketcher.setMolecule(text, { format: 'smiles' } as any);
-  } catch {}
+    return { success: true, data: text };
+  } catch (error) {
+    return { success: false, error: `Invalid SMILES: ${error}` };
+  }
 }
 
 export async function clearMolecule(ketcher: Ketcher | null): Promise<void> {
@@ -21,14 +36,18 @@ export async function clearMolecule(ketcher: Ketcher | null): Promise<void> {
   } catch {}
 }
 
-export async function readSmiles(ketcher: Ketcher | null): Promise<string> {
-  if (!ketcher) return '';
+export async function readSmiles(ketcher: Ketcher | null): Promise<ConversionResult> {
+  if (!ketcher) {
+    return { success: false, error: 'Ketcher instance not available' };
+  }
+  
   try {
     const fn: any = (ketcher as any).getSmiles;
     const smiles = (await fn?.call(ketcher)) || '';
-    return typeof smiles === 'string' ? smiles : '';
-  } catch {
-    return '';
+    const result = typeof smiles === 'string' ? smiles : '';
+    return { success: true, data: result };
+  } catch (error) {
+    return { success: false, error: `Failed to read SMILES: ${error}` };
   }
 }
 
@@ -48,10 +67,51 @@ export async function readMolfile(
   }
 }
 
-export async function applyMolfile(ketcher: Ketcher | null, molfile: string): Promise<void> {
-  if (!ketcher) return;
+export async function applyMolfile(ketcher: Ketcher | null, molfile: string): Promise<ConversionResult> {
+  if (!ketcher) {
+    return { success: false, error: 'Ketcher instance not available' };
+  }
+  
   const text = (molfile ?? '').trim();
+  if (!text) {
+    return { success: false, error: 'Empty molfile' };
+  }
+  
   try {
     await ketcher.setMolecule(text, { format: 'mol' } as any);
-  } catch {}
+    return { success: true, data: text };
+  } catch (error) {
+    return { success: false, error: `Invalid molfile: ${error}` };
+  }
+}
+
+// 静态转换函数 - 不需要Ketcher实例
+export function validateSmiles(smiles: string): boolean {
+  if (!smiles || typeof smiles !== 'string') return false;
+  
+  // 基本的SMILES格式验证
+  const smilesPattern = /^[A-Za-z0-9@+\-\[\]()=#\\\/\\\s]+$/;
+  return smilesPattern.test(smiles.trim());
+}
+
+// 批量转换SMILES到结构式（需要Ketcher实例）
+export async function batchConvertSmilesToStructures(
+  ketcher: Ketcher | null, 
+  smilesList: string[]
+): Promise<ConversionResult[]> {
+  if (!ketcher) {
+    return smilesList.map(() => ({ success: false, error: 'Ketcher instance not available' }));
+  }
+  
+  const results: ConversionResult[] = [];
+  
+  for (const smiles of smilesList) {
+    const result = await applySmiles(ketcher, smiles);
+    results.push(result);
+    
+    // 短暂延迟以避免过载
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+  
+  return results;
 }

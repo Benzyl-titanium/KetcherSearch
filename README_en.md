@@ -1,14 +1,14 @@
-<img src="public/ketchkekulesearch_logo.svg" alt="KetchKekuleSearch logo" width="100" height="100" align="right" />
+<img src="public/ketchersearch_logo.svg" alt="KetcherSearch logo" width="100" height="100" align="right" />
 
-# KetchKekuleSearch
+# KetcherSearch
 
 <p align="center">
     <a href="README.md">简体中文</a> | English
 </p>
 
-Pure front-end implementation of smiles⇄mol based on Ketcher and Kekule.js Searching for compound information from molecular structures
+Pure front-end implementation of smiles⇄mol based on Ketcher Searching for compound information from molecular structures
 
-Powered by [Ketcher](https://github.com/epam/ketcher) & [Kekule.js](https://github.com/partridgejiang/Kekule.js) & [KetchKitSearch](https://github.com/biantailab/KetchKitSearch)
+Powered by [Ketcher](https://github.com/epam/ketcher) & [KetchKitSearch](https://github.com/biantailab/KetchKitSearch)
 
 ## Dependencies
 
@@ -23,7 +23,7 @@ Powered by [Ketcher](https://github.com/epam/ketcher) & [Kekule.js](https://gith
 
 ## Demo
 
-<img src="imgs/ketchkekulesearch.gif" >
+<img src="imgs/ketchersearch.gif" >
 
 ## Functionality
 

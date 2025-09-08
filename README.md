@@ -1,14 +1,14 @@
-<img src="public/ketchkekulesearch_logo.svg" alt="KetchKekuleSearch logo" width="100" height="100" align="right" />
+<img src="public/ketchersearch_logo.svg" alt="KetcherSearch logo" width="100" height="100" align="right" />
 
-# KetchKekuleSearch
+# KetcherSearch
 
 <p align="center">
     简体中文 | <a href="README_en.md">English</a>
 </p>
 
-基于Ketcher和Kekule.js的纯前端实现smiles⇄mol的从分子结构中搜索化合物信息
+基于Ketcher的纯前端实现smiles⇄mol的从分子结构中搜索化合物信息
 
-Powered by [Ketcher](https://github.com/epam/ketcher) & [Kekule.js](https://github.com/partridgejiang/Kekule.js) & [KetchKitSearch](https://github.com/biantailab/KetchKitSearch)
+Powered by [Ketcher](https://github.com/epam/ketcher) & [KetchKitSearch](https://github.com/biantailab/KetchKitSearch)
 
 ## 依赖
 
@@ -23,7 +23,7 @@ Powered by [Ketcher](https://github.com/epam/ketcher) & [Kekule.js](https://gith
 
 ## 预览
 
-<img src="imgs/ketchkekulesearch.gif" >
+<img src="imgs/ketchersearch.gif" >
 
 ## 功能
 

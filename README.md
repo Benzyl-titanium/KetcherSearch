@@ -23,7 +23,7 @@ Powered by [Ketcher](https://github.com/epam/ketcher) & [Kekule.js](https://gith
 
 ## 预览
 
-![KetchKekuleSearch](imgs/ketchkekulesearch.png)
+<img src="imgs/ketchkekulesearch.gif" >
 
 ## 功能
 

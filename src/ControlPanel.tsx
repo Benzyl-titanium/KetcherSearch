@@ -13,6 +13,7 @@ import {
   buildDrugBankExactUrlByCAS,
   buildDrugBankFuzzyUrlBySmiles
 } from './services/drugbank';
+import { validateSmiles } from './services/smiles';
 
 interface ControlPanelProps {
   smilesInput: string;
@@ -32,6 +33,13 @@ function ControlPanel({
   onApplySmiles
 }: ControlPanelProps) {
   const [loading, setLoading] = useState(false);
+  const [isValidSmiles, setIsValidSmiles] = useState(true);
+
+  const handleSmilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setIsValidSmiles(validateSmiles(value));
+    onSmilesChange(e);
+  };
 
   // Example selection
   const handleExampleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -183,19 +191,38 @@ function ControlPanel({
           id="smiles-input"
           type="text"
           value={smilesInput}
-          onChange={onSmilesChange}
+          onChange={handleSmilesChange}
           onFocus={() => onInputFocusChange && onInputFocusChange(true)}
           onBlur={() => onInputFocusChange && onInputFocusChange(false)}
           placeholder="SMILES"
-          style={{ flex: 1, minWidth: 0 }}
+          style={{ 
+            flex: 1, 
+            minWidth: 0,
+            borderColor: isValidSmiles || !smilesInput ? '#ccc' : '#ff6b6b',
+            borderWidth: '1px',
+            borderStyle: 'solid'
+          }}
         />
+        {smilesInput && (
+          <span 
+            style={{ 
+              marginLeft: '4px', 
+              color: isValidSmiles ? '#28a745' : '#dc3545',
+              fontSize: '12px',
+              fontWeight: 'bold'
+            }}
+            title={isValidSmiles ? 'Valid SMILES' : 'Invalid SMILES format'}
+          >
+            {isValidSmiles ? '✓' : '✗'}
+          </span>
+        )}
         <a
-          href="https://github.com/biantailab/KetchKekuleSearch"
+          href="https://github.com/biantailab/KetcherSearch"
           target="_blank"
           style={{ verticalAlign: 'middle', marginLeft: '2px' }}
         >
           <img
-            src="https://img.shields.io/github/stars/biantailab/KetchKekuleSearch?style=social"
+            src="https://img.shields.io/github/stars/biantailab/KetcherSearch?style=social"
             alt="GitHub stars"
             style={{ height: '22px', verticalAlign: 'middle', position: 'relative' }}
           />

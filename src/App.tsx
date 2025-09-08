@@ -40,8 +40,12 @@ function App(): JSX.Element {
       lastAppliedSmilesRef.current = '';
       return;
     }
-    await applySmiles(ketcher, s);
-    lastAppliedSmilesRef.current = s;
+    const result = await applySmiles(ketcher, s);
+    if (result.success) {
+      lastAppliedSmilesRef.current = s;
+    } else {
+      console.error('SMILES conversion failed:', result.error);
+    }
   };
 
   const handleInputFocusChange = (focused: boolean) => {
@@ -66,8 +70,12 @@ function App(): JSX.Element {
         lastAppliedSmilesRef.current = '';
         return;
       }
-      await applySmiles(ketcher, text);
-      lastAppliedSmilesRef.current = text;
+      const result = await applySmiles(ketcher, text);
+      if (result.success) {
+        lastAppliedSmilesRef.current = text;
+      } else {
+        console.error('SMILES conversion failed:', result.error);
+      }
     }, 400);
     return () => { controller.cancelled = true; clearTimeout(timer); };
   }, [smilesInput, ketcher]);
@@ -79,13 +87,13 @@ function App(): JSX.Element {
       if (ketcherToInputTimerRef.current) clearTimeout(ketcherToInputTimerRef.current);
       ketcherToInputTimerRef.current = setTimeout(async () => {
         try {
-          const smiles = await readSmiles(ketcher);
-          if (!smiles) return;
-          if (smiles === smilesInputRef.current) return;
-          if (smiles === lastAppliedSmilesRef.current) return;
+          const result = await readSmiles(ketcher);
+          if (!result.success || !result.data) return;
+          if (result.data === smilesInputRef.current) return;
+          if (result.data === lastAppliedSmilesRef.current) return;
           if (inputFocusedRef.current) return;
           syncingFromKetcherRef.current = true;
-          setSmilesInput(smiles);
+          setSmilesInput(result.data);
         } catch {
         } finally {
           setTimeout(() => { syncingFromKetcherRef.current = false; }, 0);

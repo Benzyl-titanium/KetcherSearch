@@ -59,7 +59,7 @@ function ControlPanel({
 
   const handleHNMR = () => {
     if (smilesInput) {
-      const searchUrl = `https://www.nmrdb.org/new_predictor/index.shtml?v=v2.157.0&smiles=${encodeURIComponent(smilesInput)}`;
+      const searchUrl = `https://www.nmrdb.org/new_predictor/index.shtml?v=latest&smiles=${encodeURIComponent(smilesInput)}`;
       window.open(searchUrl, '_blank');
     }
   };

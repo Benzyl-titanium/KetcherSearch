@@ -14,7 +14,6 @@ import {
   buildDrugBankFuzzyUrlBySmiles
 } from './services/drugbank';
 import { validateSmiles } from './services/smiles';
-import { buildNMRDBUrl } from './services/nmrdb';
 
 interface ControlPanelProps {
   smilesInput: string;

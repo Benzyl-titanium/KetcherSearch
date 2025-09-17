@@ -27,15 +27,15 @@ export async function getPubChemCID(smiles: string): Promise<number | null> {
   }
 }
 
-export async function getPubChemCompoundUrlBySmiles(smiles: string): Promise<string | null> {
-  const cid = await getPubChemCID(smiles);
-  if (!cid) return null;
+export function buildPubChemCompoundUrl(cid: number): string {
+  return `https://pubchem.ncbi.nlm.nih.gov/compound/${cid}`;
+}
+
+export async function getPubChemUrlByCID(cid: number): Promise<string> {
   return buildPubChemCompoundUrl(cid);
 }
 
-export async function getWikipediaUrlBySmiles(smiles: string): Promise<string | null> {
-  const cid = await getPubChemCID(smiles);
-  if (!cid) return null;
+export async function getWikipediaUrlByCID(cid: number): Promise<string | null> {
   const data = await getPubChemData(cid);
   const synonyms = await getSynonymsByCID(cid);
   return (
@@ -45,10 +45,6 @@ export async function getWikipediaUrlBySmiles(smiles: string): Promise<string | 
       synonyms
     ) || null
   );
-}
-
-export function buildPubChemCompoundUrl(cid: number): string {
-  return `https://pubchem.ncbi.nlm.nih.gov/compound/${cid}`;
 }
 
 export async function getCASByCID(cid: number): Promise<string | null> {

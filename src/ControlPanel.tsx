@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {
-  getWikipediaUrlBySmiles,
+  getWikipediaUrlByCID,
   getMolecularFormulaByCID,
   getPubChemCID,
   getCASByCID,
   getIUPACNameByCID,
-  getPubChemCompoundUrlBySmiles,
+  getPubChemUrlByCID,
   getPubChemData,
 } from '@/services/pubchem';
 import {
@@ -76,11 +76,12 @@ function ControlPanel({
     }
     setLoading(true);
     try {
-      const url = await getPubChemCompoundUrlBySmiles(smilesInput);
-      if (!url) {
+      const cid = await getPubChemCID(smilesInput);
+      if (!cid) {
         alert(alerts.compoundNotFound);
         return;
       }
+      const url = await getPubChemUrlByCID(cid);
       window.open(url, '_blank');
     } catch (e) {
       alert(alerts.pubchemError);
@@ -156,7 +157,12 @@ function ControlPanel({
     if (!smilesInput) return;
     setLoading(true);
     try {
-      const wikipediaUrl = await getWikipediaUrlBySmiles(smilesInput);
+      const cid = await getPubChemCID(smilesInput);
+      if (!cid) {
+        alert(alerts.compoundNotFound);
+        return;
+      }
+      const wikipediaUrl = await getWikipediaUrlByCID(cid);
       if (wikipediaUrl) {
         window.open(wikipediaUrl, '_blank');
       } else {

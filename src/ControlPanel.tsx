@@ -8,6 +8,7 @@ import {
   findWikipediaLink,
   getSynonymsByCID
 } from './services/pubchem';
+import { buildPubChemCompoundUrl } from './services/pubchem';
 import {
   findDrugBankId,
   buildDrugBankExactUrlByCAS,
@@ -35,6 +36,21 @@ function ControlPanel({
   const [loading, setLoading] = useState(false);
   const [isValidSmiles, setIsValidSmiles] = useState(true);
 
+  // Common alert messages
+  const alerts = {
+    compoundNotFound: 'Compound not found',
+    casNotFound: 'CAS number not found',
+    iupacNotFound: 'IUPAC Name not found',
+    formulaNotFound: 'Molecular Formula not found',
+    wikipediaNotFound: 'Wikipedia link not found',
+    drugbankNotFound: 'DrugBank ID or CAS number not found',
+    invalidSmiles: 'Invalid SMILES format',
+    networkError: 'Failed to fetch, please check your network',
+    pubchemError: 'Failed to fetch PubChem CID, please check your network',
+    wikipediaError: 'Failed to fetch Wikipedia link',
+    drugbankError: 'Failed to fetch DrugBank info'
+  };
+
   const handleSmilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setIsValidSmiles(validateSmiles(value));
@@ -50,10 +66,27 @@ function ControlPanel({
     }
   };
 
-  const handlePubChem = () => {
-    if (smilesInput) {
-      const searchUrl = `https://pubchem.ncbi.nlm.nih.gov/#query=${encodeURIComponent(smilesInput)}`;
-      window.open(searchUrl, '_blank');
+  const handlePubChem = async () => {
+    if (!smilesInput) {
+      return;
+    }
+    if (!isValidSmiles) {
+      alert(alerts.invalidSmiles);
+      return;
+    }
+    setLoading(true);
+    try {
+      const cid = await getPubChemCID(smilesInput);
+      if (!cid) {
+        alert(alerts.compoundNotFound);
+        return;
+      }
+      const url = buildPubChemCompoundUrl(cid);
+      window.open(url, '_blank');
+    } catch (e) {
+      alert(alerts.pubchemError);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,7 +105,7 @@ function ControlPanel({
     try {
       const cid = await getPubChemCID(smilesInput);
       if (!cid) {
-        alert('Compound not found');
+        alert(alerts.compoundNotFound);
         return;
       }
       if (value === 'cas') {
@@ -81,7 +114,7 @@ function ControlPanel({
           await navigator.clipboard.writeText(cas);
           alert(`CAS ${cas} copied`);
         } else {
-          alert('CAS number not found');
+          alert(alerts.casNotFound);
         }
       } else if (value === 'iupac') {
         const name = await getIUPACNameByCID(cid);
@@ -89,7 +122,7 @@ function ControlPanel({
           await navigator.clipboard.writeText(name);
           alert(`IUPAC Name: ${name} copied`);
         } else {
-          alert('IUPAC Name not found');
+          alert(alerts.iupacNotFound);
         }
       } else if (value === 'formula') {
         const formula = await getMolecularFormulaByCID(cid);
@@ -97,11 +130,11 @@ function ControlPanel({
           await navigator.clipboard.writeText(formula);
           alert(`Molecular Formula: ${formula} copied`);
         } else {
-          alert('Molecular Formula not found');
+          alert(alerts.formulaNotFound);
         }
       }
     } catch {
-      alert('Failed to fetch, please check your network');
+      alert(alerts.networkError);
     } finally {
       setLoading(false);
       event.target.value = '';
@@ -114,7 +147,7 @@ function ControlPanel({
     try {
       const cid = await getPubChemCID(smilesInput);
       if (!cid) {
-        alert('Compound not found');
+        alert(alerts.compoundNotFound);
         return;
       }
       const data = await getPubChemData(cid);
@@ -127,10 +160,10 @@ function ControlPanel({
       if (wikipediaUrl) {
         window.open(wikipediaUrl, '_blank');
       } else {
-        alert('Wikipedia link not found');
+        alert(alerts.wikipediaNotFound);
       }
     } catch {
-      alert('Failed to fetch Wikipedia link');
+      alert(alerts.wikipediaError);
     } finally {
       setLoading(false);
     }
@@ -150,7 +183,7 @@ function ControlPanel({
     try {
       const cid = await getPubChemCID(smilesInput);
       if (!cid) {
-        alert('Compound not found');
+        alert(alerts.compoundNotFound);
         return;
       }
       if (value === 'exact') {
@@ -163,12 +196,12 @@ function ControlPanel({
           if (casNumber) {
             window.open(buildDrugBankExactUrlByCAS(casNumber), '_blank');
           } else {
-            alert('DrugBank ID or CAS number not found');
+            alert(alerts.drugbankNotFound);
           }
         }
       }
     } catch {
-      alert('Failed to fetch DrugBank info');
+      alert(alerts.drugbankError);
     } finally {
       setLoading(false);
       event.target.value = '';

@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import {
+  getWikipediaUrlByCID,
+  getMolecularFormulaByCID,
   getPubChemCID,
   getCASByCID,
-  getPubChemData,
   getIUPACNameByCID,
-  getMolecularFormulaByCID,
-  findWikipediaLink,
-  getSynonymsByCID
-} from './services/pubchem';
-import { buildPubChemCompoundUrl } from './services/pubchem';
+  getPubChemUrlByCID,
+  getPubChemData,
+} from '@/services/pubchem';
 import {
   findDrugBankId,
   buildDrugBankExactUrlByCAS,
@@ -48,7 +47,8 @@ function ControlPanel({
     networkError: 'Failed to fetch, please check your network',
     pubchemError: 'Failed to fetch PubChem CID, please check your network',
     wikipediaError: 'Failed to fetch Wikipedia link',
-    drugbankError: 'Failed to fetch DrugBank info'
+    drugbankError: 'Failed to fetch DrugBank info',
+    copyFailed: 'Copy failed'
   };
 
   const handleSmilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +81,7 @@ function ControlPanel({
         alert(alerts.compoundNotFound);
         return;
       }
-      const url = buildPubChemCompoundUrl(cid);
+      const url = await getPubChemUrlByCID(cid);
       window.open(url, '_blank');
     } catch (e) {
       alert(alerts.pubchemError);
@@ -111,24 +111,36 @@ function ControlPanel({
       if (value === 'cas') {
         const cas = await getCASByCID(cid);
         if (cas) {
-          await navigator.clipboard.writeText(cas);
-          alert(`CAS ${cas} copied`);
+          try {
+            await navigator.clipboard.writeText(cas);
+            alert(`CAS ${cas} copied`);
+          } catch {
+            alert(alerts.copyFailed);
+          }
         } else {
           alert(alerts.casNotFound);
         }
       } else if (value === 'iupac') {
         const name = await getIUPACNameByCID(cid);
         if (name) {
-          await navigator.clipboard.writeText(name);
-          alert(`IUPAC Name: ${name} copied`);
+          try {
+            await navigator.clipboard.writeText(name);
+            alert(`IUPAC Name: ${name} copied`);
+          } catch {
+            alert(alerts.copyFailed);
+          }
         } else {
           alert(alerts.iupacNotFound);
         }
       } else if (value === 'formula') {
         const formula = await getMolecularFormulaByCID(cid);
         if (formula) {
-          await navigator.clipboard.writeText(formula);
-          alert(`Molecular Formula: ${formula} copied`);
+          try {
+            await navigator.clipboard.writeText(formula);
+            alert(`Molecular Formula: ${formula} copied`);
+          } catch {
+            alert(alerts.copyFailed);
+          }
         } else {
           alert(alerts.formulaNotFound);
         }
@@ -150,13 +162,7 @@ function ControlPanel({
         alert(alerts.compoundNotFound);
         return;
       }
-      const data = await getPubChemData(cid);
-      const synonyms = await getSynonymsByCID(cid);
-      const wikipediaUrl = findWikipediaLink(
-        data.Record?.Section,
-        data.Record?.RecordTitle,
-        synonyms
-      );
+      const wikipediaUrl = await getWikipediaUrlByCID(cid);
       if (wikipediaUrl) {
         window.open(wikipediaUrl, '_blank');
       } else {
@@ -252,6 +258,7 @@ function ControlPanel({
         <a
           href="https://github.com/biantailab/KetcherSearch"
           target="_blank"
+          rel="noopener noreferrer"
           style={{ verticalAlign: 'middle', marginLeft: '2px' }}
         >
           <img
@@ -269,18 +276,18 @@ function ControlPanel({
           <option value="O=C(O)C[C@H](CC(C)C)CN">Pregabalin</option>
           <option value="CNCCC(C1=CC=CC=C1)OC2=CC=C(C=C2)C(F)(F)F">Fluoxetine</option>
         </select>
-        <button onClick={onClear} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>Clear</button>
-        <button onClick={onCopy} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>Copy</button>
-        <select onChange={handleGetSelect} style={{ height: '20px', cursor: 'pointer' }}>
+        <button onClick={onClear} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>Clear</button>
+        <button onClick={onCopy} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>Copy</button>
+        <select onChange={handleGetSelect} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', cursor: 'pointer' }}>
           <option value="">Get:</option>
           <option value="cas">CAS</option>
           <option value="iupac" title="IUPACName">Name</option>
           <option value="formula" title="Molecular Formula">Formula</option>
         </select>
-        <button onClick={handleHNMR} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>HNMR</button>
-        <button onClick={handlePubChem} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>PubChem</button>
-        <button onClick={handleGetWikipedia} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>Wikipedia</button>
-        <select onChange={handleDrugBankSelect} style={{ height: '20px', cursor: 'pointer' }}>
+        <button onClick={handleHNMR} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>HNMR</button>
+        <button onClick={handlePubChem} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>PubChem</button>
+        <button onClick={handleGetWikipedia} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>Wikipedia</button>
+        <select onChange={handleDrugBankSelect} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', cursor: 'pointer' }}>
           <option value="">DrugBank:</option>
           <option value="exact">exact</option>
           <option value="fuzzy">fuzzy</option>

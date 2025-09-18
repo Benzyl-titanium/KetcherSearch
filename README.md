@@ -3,48 +3,48 @@
 # KetcherSearch
 
 <p align="center">
-    简体中文 | <a href="README_en.md">English</a>
+   English |  <a href="README_zh-CN.md">简体中文</a>
 </p>
 
-基于Ketcher的纯前端实现smiles⇄mol的从分子结构中搜索化合物信息
+Pure front-end implementation of smiles⇄mol based on Ketcher Searching for compound information from molecular structures
 
 Powered by [Ketcher](https://github.com/epam/ketcher) & [KetchKitSearch](https://github.com/biantailab/KetchKitSearch)
 
-## 依赖
+## Dependencies
 
 - [pubchem](https://pubchem.ncbi.nlm.nih.gov)
 - [nmrdb](https://www.nmrdb.org)
 
 > [!tip]
-> DrugBank exact和Wikipedia跳转链接来自PubChem JSON
+> DrugBank exact and Wikipedia jump links from PubChem JSON
 
 - [drugbank](https://go.drugbank.com)
 - [wikipedia](https://en.wikipedia.org)
 
-## 预览
+## Demo
 
 <img src="imgs/ketchersearch.gif" >
 
-## 功能
+## Functionality
 
-- 实时转换smiles和分子结构
+- Real-time conversion of smiles and mol
 - Example:
-    - Benzyl titanium (苄钛)
-    - Pregabalin (普瑞巴林)
-    - Fluoxetine (氟西汀)
+    - Benzyl titanium
+    - Pregabalin
+    - Fluoxetine
 - Clear smiles
 - Copy smiles
 - Get:
     - CAS
     - IUPACName
-    - Molecular Formula (分子式)
-- HNMR搜索
-- PubChem搜索
-- Wikipedia搜索
-- DrugBank搜索
-    - exact (详细)
-    - fuzzy (模糊)
+    - Molecular Formula
+- HNMR search
+- PubChem search
+- Wikipedia search
+- DrugBank search
+    - exact
+    - fuzzy
 
-## 更多
+## More
 
-- [StructuredSearch](https://github.com/biantailab/StructuredSearch) - 基于Marvin JS和webservices的从分子结构检索化合物信息
+- [StructuredSearch](https://github.com/biantailab/StructuredSearch) - Searching for compound information from molecular structures based on Marvin JS and web services

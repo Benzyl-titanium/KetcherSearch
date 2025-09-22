@@ -57,7 +57,6 @@ function ControlPanel({
     onSmilesChange(e);
   };
 
-  // Example selection
   const handleExampleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     if (value) {

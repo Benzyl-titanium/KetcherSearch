@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import KetcherBox from './ketcher-component';
 import { applySmiles, clearMolecule, readSmiles } from './services/smiles';
 import ControlPanel from './ControlPanel';
+import { copyToClipboard } from './utils/copy';
 
 function App(): JSX.Element {
   const [ketcher, setKetcher] = useState<any>(null);
@@ -22,10 +23,7 @@ function App(): JSX.Element {
     if (!smilesInput) {
       return;
     }
-    try {
-      await navigator.clipboard.writeText(smilesInput);
-    } catch {
-    }
+    await copyToClipboard(smilesInput);
   };
 
   const handleSmilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {

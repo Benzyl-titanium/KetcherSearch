@@ -98,7 +98,7 @@ function ControlPanel({
       const url = await getPubChemUrlByCID(cid);
       window.open(url, '_blank');
     } catch (e) {
-      alert(alerts.pubchemError);
+      showMessage(alerts.pubchemError);
     } finally {
       setLoading(false);
     }
@@ -126,7 +126,7 @@ function ControlPanel({
         const cas = await getCASByCID(cid);
         if (cas) {
           const success = await copyToClipboard(cas);
-          alert(success ? `CAS ${cas} copied` : alerts.copyFailed);
+          showMessage(success ? `CAS ${cas} copied` : alerts.copyFailed);
         } else {
           showMessage(alerts.casNotFound);
         }
@@ -171,7 +171,7 @@ function ControlPanel({
         showMessage(alerts.wikipediaNotFound);
       }
     } catch {
-      alert(alerts.wikipediaError);
+      showMessage(alerts.wikipediaError);
     } finally {
       setLoading(false);
     }
@@ -208,7 +208,7 @@ function ControlPanel({
           }
         }
       }
-    } catch {
+    } catch (error) {
       showMessage(alerts.drugbankError);
     } finally {
       setLoading(false);

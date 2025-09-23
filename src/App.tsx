@@ -6,6 +6,7 @@ import ControlPanel from './ControlPanel';
 function App(): JSX.Element {
   const [ketcher, setKetcher] = useState<any>(null);
   const [smilesInput, setSmilesInput] = useState<string>('');
+  const [selectedExample, setSelectedExample] = useState<string>('');
   const syncingFromKetcherRef = useRef<boolean>(false);
   const lastAppliedSmilesRef = useRef<string>('');
   const ketcherToInputTimerRef = useRef<any>(null);
@@ -14,7 +15,8 @@ function App(): JSX.Element {
   
 
   const handleClear = async () => {
-    setSmilesInput("");
+    setSmilesInput('');
+    setSelectedExample('');
     await clearMolecule(ketcher);
   };
 
@@ -123,11 +125,20 @@ function App(): JSX.Element {
       <div style={{ border: '1px solid #ccc', borderRadius: '4px', marginBottom: '4px', background: '#fff' }}>
         <ControlPanel
           smilesInput={smilesInput}
+          selectedExample={selectedExample}
           onSmilesChange={handleSmilesChange}
           onClear={handleClear}
+          onExampleChange={(value) => {
+            setSmilesInput(value);
+            setSelectedExample(value);
+            if (value) {
+              applySmilesImmediate(value);
+            } else {
+              clearMolecule(ketcher);
+            }
+          }}
           onCopy={handleCopy}
           onInputFocusChange={handleInputFocusChange}
-          onApplySmiles={applySmilesImmediate}
         />
       </div>
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', border: '1px solid #ccc', borderRadius: '4px', background: '#fff' }}>

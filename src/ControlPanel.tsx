@@ -17,20 +17,22 @@ import { validateSmiles } from './services/smiles';
 
 interface ControlPanelProps {
   smilesInput: string;
+  selectedExample: string;
   onSmilesChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClear: () => void | Promise<void>;
   onCopy: () => void | Promise<void>;
   onInputFocusChange?: (focused: boolean) => void;
-  onApplySmiles?: (value?: string) => void | Promise<void>;
+  onExampleChange: (value: string) => void;
 }
 
 function ControlPanel({
   smilesInput,
+  selectedExample,
   onSmilesChange,
   onClear,
   onCopy,
   onInputFocusChange,
-  onApplySmiles
+  onExampleChange
 }: ControlPanelProps) {
   const [loading, setLoading] = useState(false);
   const [isValidSmiles, setIsValidSmiles] = useState(true);
@@ -57,13 +59,9 @@ function ControlPanel({
     onSmilesChange(e);
   };
 
-  // Example selection
   const handleExampleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
-    if (value) {
-      onSmilesChange({ target: { value } } as any);
-      if (onApplySmiles) onApplySmiles(value);
-    }
+    onExampleChange(value);
   };
 
   const handlePubChem = async () => {
@@ -270,13 +268,13 @@ function ControlPanel({
       </div>
       {/* Responsive button area */}
       <div className="button-group" style={{ marginTop: '4px', display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-        <select onChange={handleExampleChange} style={{ height: '20px', cursor: 'pointer' }}>
+        <select value={selectedExample} onChange={handleExampleChange} style={{ height: '20px', cursor: 'pointer' }}>
           <option value="">Example:</option>
           <option value="C(C1=CC=CC=C1)[Ti](CC1=CC=CC=C1)(CC1=CC=CC=C1)CC1=CC=CC=C1">Benzyl titanium</option>
           <option value="O=C(O)C[C@H](CC(C)C)CN">Pregabalin</option>
           <option value="CNCCC(C1=CC=CC=C1)OC2=CC=C(C=C2)C(F)(F)F">Fluoxetine</option>
         </select>
-        <button onClick={onClear} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>Clear</button>
+        <button onClick={onClear} disabled={loading || !smilesInput} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>Clear</button>
         <button onClick={onCopy} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>Copy</button>
         <select onChange={handleGetSelect} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', cursor: 'pointer' }}>
           <option value="">Get:</option>

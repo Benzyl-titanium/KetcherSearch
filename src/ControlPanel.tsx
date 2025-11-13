@@ -260,7 +260,7 @@ function ControlPanel({
           style={{ verticalAlign: 'middle', marginLeft: '2px' }}
         >
           <img
-            src="https://img.shields.io/github/stars/biantailab/KetcherSearch?style=social"
+            src="https://img.shields.io/github/stars/biantailab/KetcherSearch"
             alt="GitHub stars"
             style={{ height: '22px', verticalAlign: 'middle', position: 'relative' }}
           />

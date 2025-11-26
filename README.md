@@ -31,7 +31,7 @@ Powered by [Ketcher](https://github.com/epam/ketcher) & [KetchKitSearch](https:/
 - Example:
     - Benzyl titanium
     - Quinine
-    - Fluoxetine
+    - Palytoxin
 - Clear smiles
 - Copy smiles
 - Get:

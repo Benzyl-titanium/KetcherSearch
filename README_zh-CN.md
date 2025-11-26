@@ -31,7 +31,7 @@ Powered by [Ketcher](https://github.com/epam/ketcher) & [KetchKitSearch](https:/
 - Example:
     - Benzyl titanium (苄钛)
     - Quinine (奎宁)
-    - Fluoxetine (氟西汀)
+    - Palytoxin (岩沙海葵毒素)
 - Clear smiles
 - Copy smiles
 - Get:

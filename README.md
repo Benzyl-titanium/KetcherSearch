@@ -30,7 +30,7 @@ Powered by [Ketcher](https://github.com/epam/ketcher) & [KetchKitSearch](https:/
 - Real-time conversion of smiles and mol
 - Example:
     - Benzyl titanium
-    - Pregabalin
+    - Quinine
     - Fluoxetine
 - Clear smiles
 - Copy smiles

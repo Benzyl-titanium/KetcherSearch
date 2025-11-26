@@ -30,7 +30,7 @@ Powered by [Ketcher](https://github.com/epam/ketcher) & [KetchKitSearch](https:/
 - 实时转换smiles和分子结构
 - Example:
     - Benzyl titanium (苄钛)
-    - Pregabalin (普瑞巴林)
+    - Quinine (奎宁)
     - Fluoxetine (氟西汀)
 - Clear smiles
 - Copy smiles

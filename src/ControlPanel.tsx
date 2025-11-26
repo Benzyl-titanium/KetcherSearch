@@ -271,7 +271,7 @@ function ControlPanel({
         <select value={selectedExample} onChange={handleExampleChange} style={{ height: '20px', cursor: 'pointer' }}>
           <option value="">Example:</option>
           <option value="C(C1=CC=CC=C1)[Ti](CC1=CC=CC=C1)(CC1=CC=CC=C1)CC1=CC=CC=C1">Benzyl titanium</option>
-          <option value="O=C(O)C[C@H](CC(C)C)CN">Pregabalin</option>
+          <option value="COC1=CC2=C(C=CN=C2C=C1)[C@H]([C@@H]3CC4CCN3C[C@@H]4C=C)O">Quinine</option>
           <option value="CNCCC(C1=CC=CC=C1)OC2=CC=C(C=C2)C(F)(F)F">Fluoxetine</option>
         </select>
         <button onClick={onClear} disabled={loading || !smilesInput} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>Clear</button>

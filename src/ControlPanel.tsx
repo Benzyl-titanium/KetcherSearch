@@ -14,6 +14,7 @@ import {
   buildDrugBankFuzzyUrlBySmiles
 } from './services/drugbank';
 import { validateSmiles } from './services/smiles';
+import { submitToSwissTargetPrediction } from './services/swiss';
 
 interface ControlPanelProps {
   smilesInput: string;
@@ -93,6 +94,11 @@ function ControlPanel({
       const searchUrl = `https://www.nmrdb.org/new_predictor/index.shtml?v=latest&smiles=${encodeURIComponent(smilesInput)}`;
       window.open(searchUrl, '_blank');
     }
+  };
+
+  const handleSTP = () => {
+    if (!smilesInput || !isValidSmiles) return;
+    submitToSwissTargetPrediction(smilesInput);
   };
 
   // Get dropdown
@@ -290,6 +296,7 @@ function ControlPanel({
           <option value="exact">exact</option>
           <option value="fuzzy">fuzzy</option>
         </select>
+        <button onClick={handleSTP} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }} title="SwissTargetPrediction">STP</button>
       </div>
       {/* Responsive styles */}
       <style>{`
@@ -298,7 +305,7 @@ function ControlPanel({
           align-items: center;
           width: 100%;
           height: 20px;
-          max-width: 600px;
+          max-width: 647px;
           gap: 4px;
           margin: 0 auto;
         }

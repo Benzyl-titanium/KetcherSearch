@@ -20,6 +20,7 @@ Powered by [Ketcher](https://github.com/epam/ketcher) & [KetchKitSearch](https:/
 
 - [drugbank](https://go.drugbank.com)
 - [wikipedia](https://en.wikipedia.org)
+- [swisstargetprediction](https://www.swisstargetprediction.ch)
 
 ## Demo
 
@@ -44,6 +45,7 @@ Powered by [Ketcher](https://github.com/epam/ketcher) & [KetchKitSearch](https:/
 - DrugBank search
     - exact
     - fuzzy
+- SwissTargetPrediction search
 
 ## More
 

@@ -219,13 +219,13 @@ function ControlPanel({
   };
 
   return (
-    <div style={{ marginTop: '4px', marginBottom: '4px' }}>
+    <div style={{ marginTop: '4px', marginBottom: '4px' }} className='shadow-md p-2'>
       {loading && (
         <div style={{
           position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
           background: 'rgba(255,255,255,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999
         }}>
-          <div>Loading...</div>
+          <div className='text-neutral-600'>Loading...</div>
         </div>
       )}
       {/* Responsive input area */}
@@ -239,19 +239,21 @@ function ControlPanel({
           onBlur={() => onInputFocusChange && onInputFocusChange(false)}
           placeholder="SMILES"
           style={{ 
+            height: '28px',
             flex: 1, 
             minWidth: 0,
-            borderColor: isValidSmiles || !smilesInput ? '#ccc' : '#ff6b6b',
-            borderWidth: '1px',
-            borderStyle: 'solid'
+            borderColor: isValidSmiles || !smilesInput ? '' : '#ff6b6b',
+            // borderWidth: '1px',
+            // borderStyle: 'solid',
           }}
         />
         {smilesInput && (
           <span 
             style={{ 
+
               marginLeft: '4px', 
               color: isValidSmiles ? '#28a745' : '#dc3545',
-              fontSize: '12px',
+              fontSize: '16px',
               fontWeight: 'bold'
             }}
             title={isValidSmiles ? 'Valid SMILES' : 'Invalid SMILES format'}
@@ -273,30 +275,30 @@ function ControlPanel({
         </a>
       </div>
       {/* Responsive button area */}
-      <div className="button-group" style={{ marginTop: '4px', display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
-        <select value={selectedExample} onChange={handleExampleChange} style={{ height: '20px', cursor: 'pointer' }}>
+      <div className="button-group" style={{ marginTop: '4px', marginBottom: '4px', display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+        <select value={selectedExample} onChange={handleExampleChange}>
           <option value="">Example:</option>
           <option value="C(C1=CC=CC=C1)[Ti](CC1=CC=CC=C1)(CC1=CC=CC=C1)CC1=CC=CC=C1">Benzyl titanium</option>
           <option value="COC1=CC2=C(C=CN=C2C=C1)[C@H]([C@@H]3CC4CCN3C[C@@H]4C=C)O">Quinine</option>
           <option value="C[C@H]1C[C@@]2([C@H](O[C@](C1)(O2)CCCCCCC[C@@H](C[C@@H]3[C@@H]([C@H]([C@H]([C@@](O3)(C[C@@H]([C@@H](C)/C=C/[C@H](CC[C@H]([C@H]([C@@H]4C[C@H]([C@@H]([C@H](O4)C[C@H]([C@@H](C[C@@H]5[C@H]([C@@H]([C@H]([C@@H](O5)C[C@@H](/C=C\C=C\C[C@H]([C@@H]([C@@H](C/C=C\C(=C)CC[C@@H]([C@H]([C@@H]([C@H](C)C[C@@H]6[C@@H]([C@H]([C@@H]([C@H](O6)/C=C\[C@H]([C@@H](C[C@@H]7C[C@@H]8C[C@H](O7)[C@H](O8)CC[C@@H]9[C@@H](C[C@H](O9)CN)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)O)C[C@@H](C)CCCCC[C@H]([C@@H]([C@@H]([C@H]([C@@H]([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)C[C@@H]([C@@H](/C(=C/[C@@H](C[C@@H](C)[C@@H](C(=O)N/C=C/C(=O)NCCCO)O)O)/C)O)O)O)O)O)O)O)O)O)O)C">Palytoxin</option>
         </select>
-        <button onClick={onClear} disabled={loading || !smilesInput} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>Clear</button>
-        <button onClick={onCopy} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>Copy</button>
-        <select onChange={handleGetSelect} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', cursor: 'pointer' }}>
+        <button onClick={onClear} disabled={loading || !smilesInput}>Clear</button>
+        <button onClick={onCopy} disabled={loading || !smilesInput || !isValidSmiles}>Copy</button>
+        <select onChange={handleGetSelect} disabled={loading || !smilesInput || !isValidSmiles}>
           <option value="">Get:</option>
           <option value="cas">CAS</option>
           <option value="iupac" title="IUPACName">Name</option>
           <option value="formula" title="Molecular Formula">Formula</option>
         </select>
-        <button onClick={handleHNMR} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>HNMR</button>
-        <button onClick={handlePubChem} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>PubChem</button>
-        <button onClick={handleGetWikipedia} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }}>Wikipedia</button>
-        <select onChange={handleDrugBankSelect} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', cursor: 'pointer' }}>
+        <button onClick={handleHNMR} disabled={loading || !smilesInput || !isValidSmiles}>HNMR</button>
+        <button onClick={handlePubChem} disabled={loading || !smilesInput || !isValidSmiles}>PubChem</button>
+        <button onClick={handleGetWikipedia} disabled={loading || !smilesInput || !isValidSmiles}>Wikipedia</button>
+        <select onChange={handleDrugBankSelect} disabled={loading || !smilesInput || !isValidSmiles}>
           <option value="">DrugBank:</option>
           <option value="exact">exact</option>
           <option value="fuzzy">fuzzy</option>
         </select>
-        <button onClick={handleSTP} disabled={loading || !smilesInput || !isValidSmiles} style={{ height: '20px', minWidth: '4px', cursor: 'pointer' }} title="SwissTargetPrediction">STP</button>
+        <button onClick={handleSTP} disabled={loading || !smilesInput || !isValidSmiles} title="SwissTargetPrediction">STP</button>
       </div>
       {/* Responsive styles */}
       <style>{`
@@ -304,10 +306,10 @@ function ControlPanel({
           display: flex;
           align-items: center;
           width: 100%;
-          height: 20px;
+          height: auto;
           max-width: 647px;
           gap: 4px;
-          margin: 0 auto;
+          margin: 6px auto;
         }
         .button-group {
           display: flex;

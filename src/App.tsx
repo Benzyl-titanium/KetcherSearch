@@ -122,7 +122,7 @@ function App(): JSX.Element {
 
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ border: '1px solid #ccc', borderRadius: '4px', marginBottom: '4px', background: '#fff' }}>
+      <div style={{}}>
         <ControlPanel
           smilesInput={smilesInput}
           selectedExample={selectedExample}
@@ -141,7 +141,7 @@ function App(): JSX.Element {
           onInputFocusChange={handleInputFocusChange}
         />
       </div>
-      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', border: '1px solid #ccc', borderRadius: '4px', background: '#fff' }}>
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', background: '#fff' }}>
         <KetcherBox onKetcherInit={setKetcher} />
       </div>
     </div>

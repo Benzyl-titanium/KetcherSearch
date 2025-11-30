@@ -16,3 +16,19 @@ input {
   height: 100vh;
   overflow: hidden;
 }
+
+.button-group button, .button-group select {
+  height: 32px;
+  min-width: 80px;
+  --uno: text-kettext hover:text-ket hover:bg-[#f6fafd] bg-white border-none transition-all duration-300 p-2 cursor-pointer;
+}
+
+.button-group select option {
+  --uno: text-black bg-white;
+}
+
+#smiles-input {
+  --uno: rounded border-1 border-[#cad3dd] border-solid hover:border-[#4ab8c2] transition-all duration-300;
+  --uno: text-kettext focus-visible:outline-0 focus:border-[#4ab8c2] ;
+}
+

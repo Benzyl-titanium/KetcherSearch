@@ -1,10 +1,10 @@
 import React from "react";
-import "miew/dist/miew.min.css";
 import { StandaloneStructServiceProvider } from "ketcher-standalone";
 import { Editor } from "ketcher-react";
 import { Ketcher } from "ketcher-core";
 import "ketcher-react/dist/index.css";
 import Miew from "miew";
+import "./miew-styles.css";
 (window as any).Miew = Miew;
 
 const structServiceProvider = new StandaloneStructServiceProvider();

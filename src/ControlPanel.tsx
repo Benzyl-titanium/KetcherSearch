@@ -239,7 +239,7 @@ function ControlPanel({
           onBlur={() => onInputFocusChange && onInputFocusChange(false)}
           placeholder="SMILES"
           style={{ 
-            height: '28px',
+            height: '22px',
             flex: 1, 
             minWidth: 0,
             borderColor: isValidSmiles || !smilesInput ? '' : '#ff6b6b',
@@ -270,12 +270,12 @@ function ControlPanel({
           <img
             src="https://img.shields.io/github/stars/biantailab/KetcherSearch.svg?style=social"
             alt="GitHub stars"
-            style={{ height: '22px', verticalAlign: 'middle', position: 'relative' }}
+            style={{ height: '22px', verticalAlign: 'middle', position: 'relative', marginTop: '-1px' }}
           />
         </a>
       </div>
       {/* Responsive button area */}
-      <div className="button-group" style={{ marginTop: '4px', marginBottom: '4px', display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+      <div className="button-group" style={{ marginTop: '1px', marginBottom: '0px', display: 'flex', flexWrap: 'wrap', gap: '2px' }}>
         <select value={selectedExample} onChange={handleExampleChange}>
           <option value="">Example:</option>
           <option value="C(C1=CC=CC=C1)[Ti](CC1=CC=CC=C1)(CC1=CC=CC=C1)CC1=CC=CC=C1">Benzyl titanium</option>
@@ -307,30 +307,38 @@ function ControlPanel({
           align-items: center;
           width: 100%;
           height: auto;
-          max-width: 647px;
+          max-width: 678px;
           gap: 4px;
-          margin: 6px auto;
+          margin: 0px auto;
         }
         .button-group {
           display: flex;
           flex-wrap: wrap;
-          gap: 4px;
+          gap: 1px;
           justify-content: center;
         }
         .button-group button, .button-group select {
-          min-width: 80px;
+          min-width: 60px;
+          height: 24px;
+        }
+        .button-group button:disabled, .button-group select:disabled {
+          opacity: 0.5;
         }
         @media screen and (max-width: 602px) {
           .input-stars-row {
             max-width: 100vw;
           }
           .button-group {
-            gap: 4px;
+            gap: 1px;
           }
           .button-group button, .button-group select {
             flex: 1 0 auto;
-            min-width: 90px;
+            min-width: 70px;
             max-width: 100%;
+            height: 20px;
+          }
+          .button-group button:disabled, .button-group select:disabled {
+            opacity: 0.5;
           }
         }
       `}</style>

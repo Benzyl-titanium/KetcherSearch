@@ -219,7 +219,7 @@ function ControlPanel({
   };
 
   return (
-    <div style={{ marginTop: '4px', marginBottom: '4px' }} className='shadow-md p-2'>
+    <div style={{ marginTop: '4px', marginBottom: '4px' }} className='shadow-md p-1'>
       {loading && (
         <div style={{
           position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',

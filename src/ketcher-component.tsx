@@ -1,5 +1,5 @@
 import React from "react";
-import "miew/dist/miew.min.css";
+import "miew/dist/Miew.min.css";
 import { StandaloneStructServiceProvider } from "ketcher-standalone";
 import { Editor } from "ketcher-react";
 import { Ketcher } from "ketcher-core";

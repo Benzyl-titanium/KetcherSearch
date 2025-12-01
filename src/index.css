@@ -20,7 +20,7 @@ input {
 .button-group button, .button-group select {
   height: 28px;
   min-width: 80px;
-  --uno: text-kettext hover:text-ket hover:bg-[#f6fafd] bg-white border-none transition-all duration-300 p-1 cursor-pointer;
+  --uno: text-kettext hover:text-ket hover:bg-[#f6fafd] bg-white border-none transition-all duration-300 p-1 cursor-pointer rounded;
 }
 
 .button-group select option {

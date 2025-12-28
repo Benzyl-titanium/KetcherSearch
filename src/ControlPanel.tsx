@@ -299,7 +299,7 @@ function ControlPanel({
           className="ketcher-search"
           style={{
             outlineColor: isValidSmiles || !smilesInput ? undefined : '#FF4A4A',
-            flex: '2 1 700px',
+            flex: '2 1 445px',
           }}
         >
           <SearchIcon />
@@ -331,7 +331,7 @@ function ControlPanel({
           className="ketcher-search"
           style={{
             outlineColor: isValidCas || !casInput ? undefined : '#FF4A4A',
-            flex: '1 1 220px',
+            flex: '1 1 140px',
           }}
         >
           <SearchIcon />
@@ -420,7 +420,7 @@ function ControlPanel({
           opacity: 0.5;
           cursor: not-allowed;
         }
-        @media screen and (max-width: 602px) {
+        @media screen and (max-width: 685px) {
           .input-stars-row {
             max-width: 100vw;
             flex-wrap: wrap;
